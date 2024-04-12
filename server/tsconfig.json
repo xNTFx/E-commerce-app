@@ -10,10 +10,10 @@
       "strict": true,
       "baseUrl": "./",
       "paths": {
-        "@controllers": ["src/controllers/index.js"],
-        "@router": ["src/router/index.js"],
-        "@endPoints": ["src/router/endPoints.enum.js"],
-        "@prisma": ["src/config/PrismaClient.js"]
+        "@controllers": ["api/controllers/index.js"],
+        "@router": ["api/router/index.js"],
+        "@endPoints": ["api/router/endPoints.enum.js"],
+        "@prisma": ["api/config/PrismaClient.js"]
       }
     },
     // "include": ["src/**/*"],
