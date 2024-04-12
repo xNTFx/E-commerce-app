@@ -5,8 +5,9 @@ import mongoDB from "./mongoDBQueries.js";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
-
+app.use(cors({
+    origin: 'https://shopping-page-client-cn8a6er1n-ntfvs-projects.vercel.app'
+  }));
 mongoDB(app);
 setupPaymentRoutes(app);
 
