@@ -1,0 +1,16 @@
+.additional-categories {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-out;
+}
+
+.additional-categories-expanded {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in;
+}
+
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+  padding: 0 !important;
+}
+
