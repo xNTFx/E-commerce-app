@@ -25,5 +25,3 @@ dist-ssr
 
 # .gitignore content
 FirebaseSDK.json
-
-vercel.json

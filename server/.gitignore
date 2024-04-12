@@ -2,5 +2,3 @@
 .env*
 /FirebaseSDK.json
 FirebaseSDK.json
-
-vercel.json
