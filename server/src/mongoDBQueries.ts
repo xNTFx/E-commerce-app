@@ -3,7 +3,6 @@ dotenv.config({ path: "./process.env" });
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 import admin, { ServiceAccount } from "firebase-admin";
-import FirebaseSDK from "../FirebaseSDK.json" assert { type: "json" };
 import express from "express";
 import { addOrUpdateItemsType, QueryConditions, SortOptions } from "./types.js";
 
