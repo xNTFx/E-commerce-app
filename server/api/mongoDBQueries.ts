@@ -16,6 +16,7 @@ export default function mongoDBQueries(app: express.Application) {
       clientEmail: process.env.CLIENT_EMAIL,
     }),
   });
+  
 
   async function verifyIdToken(idToken: string) {
     try {
