@@ -22,9 +22,17 @@ app.use(
 
 app.use(
   cors({
-    origin: "https://shopping-page-client-cn8a6er1n-ntfvs-projects.vercel.app",
+    origin: "https://shopping-page-client.vercel.app",
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://shopping-page-client.vercel.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 mongoDB(app);
 setupPaymentRoutes(app);
 
