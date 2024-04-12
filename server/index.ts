@@ -34,5 +34,9 @@ app.options('*', cors(corsOptions));
 mongoDB(app);
 setupPaymentRoutes(app);
 
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
+  });
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
