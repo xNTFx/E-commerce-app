@@ -7,7 +7,7 @@ import express from "express";
 import { addOrUpdateItemsType, QueryConditions, SortOptions } from "../types.js";
 
 export default function mongoDBQueries(app: express.Application) {
-  const mongoUri = process.env.MONGODB_URI
+  const mongoUri = process.env.MONGODB_URI!
 
   admin.initializeApp({
     credential: admin.credential.cert({
