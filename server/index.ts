@@ -19,19 +19,19 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
-        connectSrc: ["'self'", "https://api.example.com"],
-        imgSrc: ["'self'", "data:"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
+//         connectSrc: ["'self'", "https://api.example.com"],
+//         imgSrc: ["'self'", "data:"],
+//         styleSrc: ["'self'", "'unsafe-inline'"],
+//       },
+//     },
+//   })
+// );
 
 app.options("*", cors(corsOptions));
 
