@@ -10,7 +10,7 @@ export default function useDeleteEntireCart() {
 
   async function deleteCartItem(userId: string | undefined) {
     if (!userId) return;
-    const URL = 'http://localhost:3001';
+    const URL = 'https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app';
     const data = await axios.delete(URL + '/deleteEntireCart', {
       data: { userId },
     });

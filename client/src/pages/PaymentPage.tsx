@@ -11,14 +11,14 @@ function PaymentPage() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3001/config').then(async (r) => {
+    fetch('https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/config').then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3001/create-payment-intent', {
+    fetch('https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/create-payment-intent', {
       method: 'POST',
       body: JSON.stringify({}),
     }).then(async (result) => {

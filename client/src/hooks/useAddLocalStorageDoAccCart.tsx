@@ -11,7 +11,7 @@ export default function useAddLocalStorageDoAccCart() {
   // Update to handle a batch of items
   async function addProducts(products: string[]) {
     if (!products || products.length === 0) return;
-    const URL = 'http://localhost:3001/add-or-update-items-in-cart';
+    const URL = 'https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/add-or-update-items-in-cart';
     const idToken = await getIdTokenFunction();
     const data = await axios.post(URL, {
       userId: idToken,

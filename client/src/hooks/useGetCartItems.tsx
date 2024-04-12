@@ -34,7 +34,7 @@ export default function useGetCartItems() {
       const parseStoredData = JSON.parse(storedData);
       const ids = parseStoredData.map((obj: ProductType) => obj.productId);
       if (ids.length === 0) return;
-      const URL = `http://localhost:3001/productsFromIdArray?ids=${ids}`;
+      const URL = `https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/productsFromIdArray?ids=${ids}`;
       const response = await fetch(URL);
       const data = await response.json();
 
@@ -54,7 +54,7 @@ export default function useGetCartItems() {
   ) {
     const [, { userId }] = context.queryKey;
     if (!userId) return;
-    const URL = `http://localhost:3001/cart?userId=${userId}`;
+    const URL = `https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/cart?userId=${userId}`;
     const response = await fetch(URL);
     const data = await response.json();
     return data;

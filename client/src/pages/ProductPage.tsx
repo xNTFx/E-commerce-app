@@ -28,7 +28,7 @@ export default function ProductPage() {
   ) {
     const [, id] = context.queryKey;
     if (!id) return;
-    const URL = `http://localhost:3001/singleProduct?id=${id}`;
+    const URL = `https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/singleProduct?id=${id}`;
     const response = await fetch(URL);
     const data = await response.json();
     return data;

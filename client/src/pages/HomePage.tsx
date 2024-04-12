@@ -39,7 +39,7 @@ export default function HomePage() {
   ) {
     const [, { page, price, sortBy, categoryList }] = context.queryKey;
 
-    let baseURL = `http://localhost:3001/products?limit=${pageItemsCount}&offset=${page * 12 - 12}&sortBy=${sortBy}`;
+    let baseURL = `https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app/products?limit=${pageItemsCount}&offset=${page * 12 - 12}&sortBy=${sortBy}`;
     if (price && price[0] != null) {
       baseURL += `&minPrice=${price[0]}`;
     }
