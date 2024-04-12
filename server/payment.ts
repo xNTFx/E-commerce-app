@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "./process.env" });
+dotenv.config();
 import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 import express from "express";

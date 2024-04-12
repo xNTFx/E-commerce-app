@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "./process.env" });
+dotenv.config();
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 import admin from "firebase-admin";
