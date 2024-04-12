@@ -17,9 +17,9 @@ export default function mongoDBQueries(app: express.Application) {
     }),
   });
 
-  console.log("user:", process.env.DB_USERNAME);
-  console.log("pass: ", process.env.DB_PASSWORD);
-  console.log("cluster:", process.env.DB_CLUSTERURL);
+  app.get("/ma", (req, res) => {
+    res.send("Hello, World ma!");
+  });
 
   async function verifyIdToken(idToken: string) {
     try {
