@@ -16,7 +16,10 @@ export default function mongoDBQueries(app: express.Application) {
       clientEmail: process.env.CLIENT_EMAIL,
     }),
   });
-  
+
+  console.log("user:", process.env.DB_USERNAME);
+  console.log("pass: ", process.env.DB_PASSWORD);
+  console.log("cluster:", process.env.DB_CLUSTERURL);
 
   async function verifyIdToken(idToken: string) {
     try {
