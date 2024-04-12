@@ -5,37 +5,31 @@ import mongoDB from "./mongoDBQueries.js";
 import helmet from "helmet";
 
 const app = express();
+
+const corsOptions = {
+    origin: "https://shopping-page-client.vercel.app", 
+    methods: "GET, POST, PUT, DELETE, OPTIONS", 
+    allowedHeaders: "Content-Type, Authorization", 
+    credentials: true, 
+    optionsSuccessStatus: 200 
+};
+
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://shopping-page-client.vercel.app",
-    methods: "GET,POST,PUT,DELETE,OPTIONS",
-    allowedHeaders: "Content-Type,Authorization",
-    credentials: true,
-    optionsSuccessStatus: 200,
-  })
-);
+app.use(cors(corsOptions));
 
-app.use((req, res, next) => {
-    res.header({"Access-Control-Allow-Origin": "*"});
-    next();
-  }) 
-
-app.use(
-  helmet({
+app.use(helmet({
     contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
-        connectSrc: ["'self'", "https://api.example.com"],
-        imgSrc: ["'self'", "data:"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-      },
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com"],
+            connectSrc: ["'self'", "https://api.example.com"],
+            imgSrc: ["'self'", "data:"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+        },
     },
-  })
-);
+}));
 
-app.options("*", cors());
+app.options('*', cors(corsOptions));
 
 mongoDB(app);
 setupPaymentRoutes(app);
