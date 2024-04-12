@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
 import admin from "firebase-admin";
 import express from "express";
-import { addOrUpdateItemsType, QueryConditions, SortOptions } from "./types.js";
+import { addOrUpdateItemsType, QueryConditions, SortOptions } from "../types.js";
 
 export default function mongoDBQueries(app: express.Application) {
   const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTERURL}`;
