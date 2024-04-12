@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import cors from "cors";
 import setupPaymentRoutes from "./payment.js";
@@ -38,6 +40,9 @@ setupPaymentRoutes(app);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
+  res.send("user:" + process.env.DB_USERNAME);
+  res.send("pass: " + process.env.DB_PASSWORD);
+  res.send("cluster:" + process.env.DB_CLUSTERURL);
 });
 
 const PORT = process.env.PORT || 3000;
