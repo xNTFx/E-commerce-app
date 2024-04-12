@@ -1,4 +1,3 @@
 *.env
 .env*
-/FirebaseSDK.json
-FirebaseSDK.json
+node_modules
