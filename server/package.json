@@ -11,7 +11,7 @@
     "stripe": "^15.1.0"
   },
   "scripts": {
-    "start": "npx tsx src/index.ts"
+    "start": "npx tsx api/index.ts"
   },
   "devDependncies": {
     "@eslint/eslintrc": "^3.0.2",
