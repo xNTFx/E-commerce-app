@@ -12,7 +12,7 @@ interface DeleteCartItemType {
 export default function useDeleteCartItem() {
   async function deleteCartItem({ userId, cartId }: DeleteCartItemType) {
     if (!userId || !cartId) return;
-    const URL = 'https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app';
+    const URL = 'https://shopping-page-server.vercel.app';
     const data = await axios.delete(URL + '/deleteCart', {
       data: { userId, cartId },
     });

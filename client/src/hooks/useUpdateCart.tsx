@@ -7,7 +7,7 @@ export default function useUpdateCart() {
   const queryClient = useQueryClient();
 
   async function updateCartApi(newCart: UpdateCartType) {
-    const URL = 'https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app';
+    const URL = 'https://shopping-page-server.vercel.app';
     const data = await axios.post(URL + '/updateCart', newCart);
     return data;
   }

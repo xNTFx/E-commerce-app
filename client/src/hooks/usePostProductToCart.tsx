@@ -7,7 +7,7 @@ export default function usePostProductToCart() {
   async function addProduct(newProduct: CartItemsType) {
     if (!newProduct.userId || !newProduct.productId || !newProduct.count)
       return;
-    const URL = 'https://shopping-page-server-9drtghyc7-ntfvs-projects.vercel.app';
+    const URL = 'https://shopping-page-server.vercel.app';
     const data = await axios.post(
       URL + '/add-or-update-item-in-cart',
       newProduct,
