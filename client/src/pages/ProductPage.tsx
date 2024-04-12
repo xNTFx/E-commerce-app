@@ -9,6 +9,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import AddedToCartMessage from '../components/AddedToCartMessage';
+import LoadingPageComponent from '../components/LoadingComponents/LoadingPageComponent';
 import QuantitySelect from '../components/QuantitySelect';
 import { UserContext } from '../context/UserContext';
 import usePostProductToCart from '../hooks/usePostProductToCart';
@@ -43,7 +44,11 @@ export default function ProductPage() {
   const product: ProductType = data;
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <LoadingPageComponent />
+      </div>
+    );
   }
   if (error) {
     alert(error);
