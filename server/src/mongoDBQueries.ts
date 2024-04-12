@@ -5,13 +5,17 @@ import { ObjectId } from "mongodb";
 import admin, { ServiceAccount } from "firebase-admin";
 import FirebaseSDK from "../FirebaseSDK.json" assert { type: "json" };
 import express from "express";
-import { QueryConditions, SortOptions } from "./types.js";
+import { addOrUpdateItemsType, QueryConditions, SortOptions } from "./types.js";
 
 export default function mongoDBQueries(app: express.Application) {
   const mongoUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTERURL}`;
 
   admin.initializeApp({
-    credential: admin.credential.cert(FirebaseSDK as ServiceAccount),
+    credential: admin.credential.cert({
+      projectId: process.env.PROJECT_ID,
+      privateKey: process.env.PRIVATE_KEY!.replace(/\\n/g, "\n"),
+      clientEmail: process.env.CLIENT_EMAIL,
+    }),
   });
 
   async function verifyIdToken(idToken: string) {
@@ -177,7 +181,6 @@ export default function mongoDBQueries(app: express.Application) {
           .send("An error occurred while retrieving a firebase id.");
       }
 
-
       const existingCartItem = await CartItemsModel.findOne({
         userId: decodedUserId,
         productId: new ObjectId(productId),
@@ -207,6 +210,53 @@ export default function mongoDBQueries(app: express.Application) {
         .status(500)
         .send("An error occurred while adding/updating the item in the cart.");
     }
+  });
+
+  app.post("/add-or-update-items-in-cart", async (req, res) => {
+    try {
+      const { userId, items } = req.body;
+      const decodedUserId = await verifyIdToken(userId);
+      if (!decodedUserId) {
+        return res
+          .status(500)
+          .send("An error occurred while retrieving a firebase id.");
+      }
+
+      const updatePromises = items.map(async (item: addOrUpdateItemsType) => {
+        const { productId, count } = item;
+        const existingCartItem = await CartItemsModel.findOne({
+          userId: decodedUserId,
+          productId: new ObjectId(productId),
+        });
+
+        if (existingCartItem && existingCartItem.count) {
+          existingCartItem.count += count;
+          return existingCartItem.save();
+        } else {
+          return CartItemsModel.create({
+            _id: new ObjectId(),
+            userId: decodedUserId,
+            productId,
+            count,
+          });
+        }
+      });
+
+      const results = await Promise.all(updatePromises);
+      res.status(200).send({
+        message: "Cart items processed successfully",
+        items: results,
+      });
+    } catch (error) {
+      console.error("Error processing cart items:", error);
+      res
+        .status(500)
+        .send("An error occurred while processing the items in the cart.");
+    }
+  });
+
+  app.listen(3000, () => {
+    console.log("Server running on port 3000");
   });
 
   app.post("/updateCart", async (req, res) => {

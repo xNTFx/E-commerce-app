@@ -104,7 +104,7 @@ function Login() {
           type="email"
           className="rounded-lg border border-black p-2"
         />
-        {errors.email && <p>{errors.email.message?.toString()}</p>}
+        {errors.email && <p className='text-red-600'>{errors.email.message?.toString()}</p>}
         <input
           autoComplete="current-password"
           placeholder="password"

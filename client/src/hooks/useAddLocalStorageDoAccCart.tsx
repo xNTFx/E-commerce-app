@@ -1,31 +1,52 @@
-import { useCallback } from 'react';
-import { CartItemsType } from '../types/APITypes';
+import axios from 'axios';
+import { useCallback, useRef } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
+
 import getIdTokenFunction from '../utils/getIdTokenFunction';
-import usePostProductToCart from './usePostProductToCart';
 
 export default function useAddLocalStorageDoAccCart() {
-  const { apiMutate } = usePostProductToCart();
+  const firstTime = useRef(true);
+  const queryClient = useQueryClient();
+
+  // Update to handle a batch of items
+  async function addProducts(products: string[]) {
+    if (!products || products.length === 0) return;
+    const URL = 'http://localhost:3001/add-or-update-items-in-cart';
+    const idToken = await getIdTokenFunction();
+    const data = await axios.post(URL, {
+      userId: idToken,
+      items: products,
+    });
+    return data;
+  }
+
+  const { error: addProductsError, mutate: addProductsMutate } = useMutation(
+    addProducts,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['cart']);
+      },
+    },
+  );
 
   const addLocalStorageToAccCart = useCallback(async () => {
-    const localStorageData = localStorage.getItem('cartItems');
+    if (firstTime.current) {
+      const localStorageData = localStorage.getItem('cartItems');
+      if (!localStorageData) return;
+      const parseLocalStorageData = JSON.parse(localStorageData);
 
-    if (!localStorageData) return;
-    const parseLocalStorageData = JSON.parse(localStorageData);
+      // Pass all items to mutate function for a single API call
+      addProductsMutate(parseLocalStorageData);
 
-    const idToken = await getIdTokenFunction();
+      localStorage.removeItem('cartItems');
+      firstTime.current = false;
+    }
+  }, [addProductsMutate]);
 
-    const mutationPromises = parseLocalStorageData.map((element: CartItemsType) => 
-      apiMutate({
-        userId: idToken,
-        productId: element.productId,
-        count: element.count,
-      })
-    );
-
-    await Promise.all(mutationPromises);
-
-    localStorage.removeItem('cartItems');
-  }, [apiMutate]);
+  if (addProductsError) {
+    console.error('Failed to add products:', addProductsError);
+    alert('Failed to update cart.');
+  }
 
   return addLocalStorageToAccCart;
 }

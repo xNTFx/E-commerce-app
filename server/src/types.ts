@@ -12,4 +12,9 @@ interface QueryConditions {
   };
 }
 
-export { SortOptions, QueryConditions };
+interface addOrUpdateItemsType {
+  productId: string;
+  count: number;
+}
+
+export { SortOptions, QueryConditions, addOrUpdateItemsType };
