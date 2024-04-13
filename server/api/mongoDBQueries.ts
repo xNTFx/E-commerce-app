@@ -17,10 +17,6 @@ export default function mongoDBQueries(app: express.Application) {
     }),
   });
 
-  app.get("/ma", (req, res) => {
-    res.send("Hello, World ma!");
-  });
-
   async function verifyIdToken(idToken: string) {
     try {
       const decodedToken = await admin.auth().verifyIdToken(idToken);
