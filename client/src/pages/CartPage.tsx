@@ -118,7 +118,7 @@ export default function CartPage() {
     <main className="mt-4 flex flex-col items-center justify-center overflow-hidden sm:mt-10">
       {data?.length > 0 ? (
         <>
-          <section className="relative flex flex-col gap-4 p-1 sm:w-[80vw]">
+          <section className="relative flex w-[95vw] flex-col gap-4 p-1 sm:w-[80vw]">
             <h1 className="text-3xl font-bold">Cart ({allItemCount})</h1>
             {cartItems}
             {isFetching ? <LoadingDivComponent /> : null}
