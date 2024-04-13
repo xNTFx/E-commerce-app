@@ -142,7 +142,7 @@ export default function ProductPage() {
             </div>
             <hr className="my-3 w-full" />
             <p>{product.description}</p>
-            <div className="mt-2 flex flex-row gap-2">
+            <div className="mt-2 flex flex-row gap-5">
               <QuantitySelect
                 productQuantity={productQuantity}
                 setProductQuantity={setProductQuantity}
@@ -156,7 +156,7 @@ export default function ProductPage() {
               <Link
                 to="/order"
                 onClick={postProdut}
-                className="rounded-lg bg-blue-600 p-2 text-white transition-transform hover:scale-110"
+                className="flex items-center justify-center rounded-lg bg-blue-600 p-2 text-white transition-transform hover:scale-110"
               >
                 Buy now
               </Link>
