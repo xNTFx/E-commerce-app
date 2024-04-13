@@ -2,6 +2,7 @@
 
 ## Tech Stack
 - React
+- Node.js
 - Typescript
 - Tailwind
 - MongoDB
