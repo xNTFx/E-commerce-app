@@ -23,7 +23,8 @@ export default function setupPaymentRoutes(app: express.Application) {
       res.send({
         clientSecret: paymentIntent.client_secret,
       });
-    } catch (e) {
+    } catch (e: unknown) {
+      console.error((e as Error).message);
       return res.status(400).send({
         error: {
           message: (e as Error).message,

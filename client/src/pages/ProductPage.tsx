@@ -1,6 +1,6 @@
 import { Rating } from '@mui/material';
 import { useContext, useState } from 'react';
-import { QueryFunctionContext, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import { Link, useParams } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -8,42 +8,36 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import AddedToCartMessage from '../components/AddedToCartMessage';
+import { getSingleProduct } from '../API/GetFetches';
 import LoadingPageComponent from '../components/LoadingComponents/LoadingPageComponent';
-import QuantitySelect from '../components/QuantitySelect';
 import { UserContext } from '../context/UserContext';
-import usePostProductToCart from '../hooks/usePostProductToCart';
+import QuantitySelect from '../features/ProductPage/components/QuantitySelect';
+import usePostProductToCart from '../features/ProductPage/hooks/usePostProductToCart';
+import useShowNotification from '../hooks/useShowNotification';
 import { ProductType } from '../types/APITypes';
 import getIdTokenFunction from '../utils/getIdTokenFunction';
 
 export default function ProductPage() {
   const { id } = useParams();
   const { user } = useContext(UserContext);
+  const { showNotification } = useShowNotification();
 
   const [productQuantity, setProductQuantity] = useState(1);
 
   const { apiMutate, localStorageMutate } = usePostProductToCart();
 
-  async function fetchProducts(
-    context: QueryFunctionContext<[string, string | undefined]>,
-  ) {
-    const [, id] = context.queryKey;
-    if (!id) return;
-    const URL = `https://shopping-page-server.vercel.app/singleProduct?id=${id}`;
-    const response = await fetch(URL);
-    const data = await response.json();
-    return data;
-  }
-  const { data, isLoading, error } = useQuery(['products', id], fetchProducts, {
-    refetchOnWindowFocus: false,
-    enabled: !!id,
-  });
-
-  const [isCartMessage, setIsCartMessage] = useState(false);
+  const { data, isLoading, error } = useQuery(
+    ['products', id],
+    getSingleProduct,
+    {
+      refetchOnWindowFocus: false,
+      enabled: !!id,
+    },
+  );
 
   const product: ProductType = data;
 
-  if (isLoading) {
+  if (isLoading || data === undefined) {
     return (
       <div>
         <LoadingPageComponent />
@@ -51,7 +45,7 @@ export default function ProductPage() {
     );
   }
   if (error) {
-    alert(error);
+    console.error(error);
   }
   if (!data || data.length === 0) return;
 
@@ -63,7 +57,7 @@ export default function ProductPage() {
     return (
       <SwiperSlide key={index}>
         <img
-          className="h-[10rem] w-[95vw] object-scale-down md:h-[20rem] md:w-[30rem]"
+          className="h-[10rem] w-[95vw] border object-scale-down md:h-[20rem] md:w-[30rem]"
           src={image}
           alt={`Product Image ${index + 1}`}
         />
@@ -86,21 +80,21 @@ export default function ProductPage() {
           count: productQuantity,
         });
       }
+
+      showNotification('Product added to cart', {
+        backgroundColor: 'green',
+        textColor: '#ffffff',
+        duration: 1500,
+      });
     } catch (e) {
       console.error(e);
     }
-    setIsCartMessage(true);
-
-    setTimeout(() => {
-      setIsCartMessage(false);
-    }, 3000);
   }
 
   return (
     <main className="mt-10 flex min-h-[50vh] flex-col items-center justify-center gap-4 overflow-hidden">
-      {isCartMessage ? <AddedToCartMessage /> : null}
       <section>
-        <article className="rounded-lg p-5 shadow">
+        <article className="rounded-lg border border-gray-400 p-5 shadow">
           <section className="flex w-[95vw] select-none shadow sm:w-[30rem]">
             <Swiper
               modules={[Navigation, Pagination]}
@@ -130,7 +124,7 @@ export default function ProductPage() {
                 {discountedPrice ? (
                   <>
                     <p>
-                      <s className="text-xl">${discountedPrice}</s>
+                      <s className="text-xl">${discountedPrice.toFixed(2)}</s>
                     </p>
                     <p className="rounded-lg bg-green-200 px-1 text-xl font-bold text-green-800">
                       -{Math.round(product.discountPercentage)}%
@@ -138,7 +132,9 @@ export default function ProductPage() {
                   </>
                 ) : null}
               </div>
-              <p className="mt-1 text-2xl font-bold">${product.price}</p>
+              <p className="mt-1 text-2xl font-bold">
+                ${product.price.toFixed(2)}
+              </p>
             </div>
             <hr className="my-3 w-full" />
             <p>{product.description}</p>
@@ -154,7 +150,7 @@ export default function ProductPage() {
                 Add to cart
               </button>
               <Link
-                to="/order"
+                to="/cart"
                 onClick={postProdut}
                 className="flex items-center justify-center rounded-lg bg-blue-600 p-2 text-white transition-transform hover:scale-110"
               >

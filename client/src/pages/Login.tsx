@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { auth } from '../API/Firebase';
+import useAddProductsFromFromLocalStorageToAccountCart from '../hooks/useAddProductsFromFromLocalStorageToAccountCart';
+import useShowNotification from '../hooks/useShowNotification';
 import { FirebaseError, FirebaseErrorCodes } from '../types/FirebaseAuthTypes';
 
 const formSchema = z.object({
@@ -23,6 +25,10 @@ function Login() {
   const [firebaseStatus, setFirebaseStatus] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { showNotification } = useShowNotification();
+
+  const addLocalStorageToAccCart =
+    useAddProductsFromFromLocalStorageToAccountCart();
 
   const {
     register,
@@ -71,6 +77,12 @@ function Login() {
       );
       reset();
       if (userCredential.user) {
+        await addLocalStorageToAccCart();
+        showNotification('Successfully logged in', {
+          backgroundColor: 'green',
+          textColor: '#ffffff',
+          duration: 3000,
+        });
         navigate('/');
       } else {
         setFirebaseStatus('User not found. Please try again.');
@@ -104,7 +116,9 @@ function Login() {
           type="email"
           className="rounded-lg border border-black p-2"
         />
-        {errors.email && <p className='text-red-600'>{errors.email.message?.toString()}</p>}
+        {errors.email && (
+          <p className="text-red-600">{errors.email.message?.toString()}</p>
+        )}
         <input
           autoComplete="current-password"
           placeholder="password"

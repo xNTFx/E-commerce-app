@@ -1,9 +1,40 @@
 import { useContext, useEffect, useState } from 'react';
-import { QueryFunctionContext, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 
+import { fetchProductsFromCart, getProductsFromArray } from '../API/GetFetches';
 import { UserContext } from '../context/UserContext';
 import { CartItemsType, ProductType } from '../types/APITypes';
 import getIdTokenFunction from '../utils/getIdTokenFunction';
+
+async function getCartItems() {
+  const storedData = localStorage.getItem('cartItems');
+  if (!storedData) return null;
+
+  const parseStoredData = JSON.parse(storedData);
+  const ids = parseStoredData.map((obj: ProductType) => obj.productId);
+
+  const data = await getProductsFromArray(ids);
+  if (!data) return null;
+
+  const dataMap = new Map(
+    data.map((item: ProductType) => {
+      if (!item._id) {
+        console.warn('Product without _id:', item);
+      }
+      return [item._id, item];
+    }),
+  );
+
+  const mergedArray = parseStoredData.map((item: CartItemsType) => {
+    const productDetails = dataMap.get(item.productId);
+    return {
+      ...item,
+      productDetails: productDetails ? [productDetails] : [],
+    };
+  });
+
+  return mergedArray;
+}
 
 export default function useGetCartItems() {
   const [idToken, setIdToken] = useState<string | null>(null);
@@ -24,47 +55,17 @@ export default function useGetCartItems() {
 
   const {
     data: localStorageData,
-    isFetching: localStorageisFetching,
+    isFetching: localStorageIsFetching,
     isLoading: localStorageIsLoading,
-  } = useQuery(
-    ['localStorage', 'cartItems'],
-    async () => {
-      const storedData = localStorage.getItem('cartItems');
-      if (!storedData) return null;
-      const parseStoredData = JSON.parse(storedData);
-      const ids = parseStoredData.map((obj: ProductType) => obj.productId);
-      if (ids.length === 0) return;
-      const URL = `https://shopping-page-server.vercel.app/productsFromIdArray?ids=${ids}`;
-      const response = await fetch(URL);
-      const data = await response.json();
+  } = useQuery(['localStorage', 'cartItems'], getCartItems);
 
-      const mergedArray = parseStoredData.map(
-        (item: CartItemsType, index: number) => ({
-          ...item,
-          productDetails: [data[index]],
-        }),
-      );
-
-      return mergedArray;
-    },
-  );
-
-  async function fetchProducts(
-    context: QueryFunctionContext<[string, { userId: string | null }]>,
-  ) {
-    const [, { userId }] = context.queryKey;
-    if (!userId) return;
-    const URL = `https://shopping-page-server.vercel.app/cart?userId=${userId}`;
-    const response = await fetch(URL);
-    const data = await response.json();
-    return data;
-  }
   const { data, isLoading, isFetching, error } = useQuery(
     ['cart', { userId: idToken }],
-    fetchProducts,
+    fetchProductsFromCart,
     {
       enabled: !!idToken,
       keepPreviousData: true,
+      refetchOnWindowFocus: false,
     },
   );
 
@@ -79,7 +80,7 @@ export default function useGetCartItems() {
     return {
       data: localStorageData,
       isLoading: localStorageIsLoading,
-      isFetching: localStorageisFetching,
+      isFetching: localStorageIsFetching,
     };
   }
   return { data: null, isLoading: false };

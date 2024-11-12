@@ -7,7 +7,10 @@ export default function useSumAndCountOfProducts(data: CartItemsType[]) {
     return data?.reduce((totalAccumulator: number, item: CartItemsType) => {
       const itemTotal = item.productDetails
         ? item.productDetails.reduce((productAccumulator, productDetail) => {
-            return productAccumulator + productDetail.price * item.count;
+            return (
+              productAccumulator +
+              productDetail.price * (item.count ? item.count : 1)
+            );
           }, 0)
         : 0;
       return totalAccumulator + itemTotal;
@@ -16,7 +19,7 @@ export default function useSumAndCountOfProducts(data: CartItemsType[]) {
 
   const allItemCount = useMemo(() => {
     return data?.reduce((totalAccumulator: number, item: CartItemsType) => {
-      return totalAccumulator + item.count;
+      return totalAccumulator + (item.count ? item.count : 1);
     }, 0);
   }, [data]);
 

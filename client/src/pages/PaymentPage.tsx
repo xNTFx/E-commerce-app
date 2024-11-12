@@ -2,8 +2,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { Stripe, loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 
-import CheckoutForm from '../components/CheckoutForm';
 import LoadingPageComponent from '../components/LoadingComponents/LoadingPageComponent';
+import CheckoutForm from '../features/PaymentPage/components/CheckoutForm';
 
 function PaymentPage() {
   const [stripePromise, setStripePromise] =
@@ -11,14 +11,14 @@ function PaymentPage() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch('https://shopping-page-server.vercel.app/config').then(async (r) => {
+    fetch('http://localhost:3000/config').then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch('https://shopping-page-server.vercel.app/create-payment-intent', {
+    fetch('http://localhost:3000/create-payment-intent', {
       method: 'POST',
       body: JSON.stringify({}),
     }).then(async (result) => {

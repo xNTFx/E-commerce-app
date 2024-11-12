@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { auth } from '../API/Firebase';
+import useAddProductsFromFromLocalStorageToAccountCart from '../hooks/useAddProductsFromFromLocalStorageToAccountCart';
+import useShowNotification from '../hooks/useShowNotification';
 import { FirebaseErrorCodes } from '../types/FirebaseAuthTypes';
 
 const formSchema = z
@@ -34,6 +36,10 @@ function Register() {
   const [firebaseStatus, setFirebaseStatus] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { showNotification } = useShowNotification();
+
+  const addLocalStorageToAccCart =
+    useAddProductsFromFromLocalStorageToAccountCart();
 
   const {
     register,
@@ -63,6 +69,12 @@ function Register() {
       reset();
       if (userCredential.user) {
         localStorage.setItem('cartItems', '');
+        await addLocalStorageToAccCart();
+        showNotification('Successfully registered', {
+          backgroundColor: 'green',
+          textColor: '#ffffff',
+          duration: 3000,
+        });
         navigate('/');
       } else {
         setFirebaseStatus('User not found. Please try again.');
