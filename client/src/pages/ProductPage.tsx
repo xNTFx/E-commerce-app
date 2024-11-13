@@ -109,7 +109,7 @@ export default function ProductPage() {
             <h1 className="text-3xl font-extrabold">{product.title}</h1>
             <p className="text-2xl font-[400]">{product.brand}</p>
             <Link
-              to={`/1?category=${product.category}`}
+              to={`page/1?category=${product.category}`}
               className="flex justify-start text-xl underline"
             >
               {product.category}
