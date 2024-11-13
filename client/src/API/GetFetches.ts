@@ -2,6 +2,8 @@ import axios from 'axios';
 import { isArray } from 'lodash';
 import { QueryFunctionContext } from 'react-query';
 
+import apiURL from './apiURL';
+
 interface FetchProductsProps {
   page: number;
   price: number[];
@@ -17,8 +19,7 @@ async function fetchProducts({
   categoryList,
   pageItemsCount,
 }: FetchProductsProps) {
-  //await new Promise((resolve) => setTimeout(resolve, 5000));
-  let baseURL = `http://localhost:3000/products?limit=${pageItemsCount}&offset=${
+  let baseURL = `${apiURL}/products?limit=${pageItemsCount}&offset=${
     page * pageItemsCount - pageItemsCount
   }&sortBy=${sortBy || ''}`;
 
@@ -42,7 +43,7 @@ async function fetchProductsFromCart(
 ) {
   const [, { userId }] = context.queryKey;
   if (!userId) return;
-  const URL = `http://localhost:3000/cart?userId=${userId}`;
+  const URL = `${apiURL}/cart?userId=${userId}`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -53,7 +54,7 @@ async function fetchProductsFromCart(
 async function getProductsFromArray(ids: string[]) {
   if (ids.length === 0) return null;
 
-  const URL = `http://localhost:3000/productsFromIdArray?ids=${ids}`;
+  const URL = `${apiURL}/productsFromIdArray?ids=${ids}`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -65,21 +66,21 @@ async function getSingleProduct(
 ) {
   const [, id] = context.queryKey;
   if (!id) return;
-  const URL = `http://localhost:3000/singleProduct?id=${id}`;
+  const URL = `${apiURL}/singleProduct?id=${id}`;
   const response = await fetch(URL);
   const data = await response.json();
   return data;
 }
 
 async function getCategories() {
-  const response = await fetch('http://localhost:3000/categories');
+  const response = await fetch(`${apiURL}/categories`);
   const data = await response.json();
   return data;
 }
 
 async function getOrders(idToken: string | undefined | null) {
   if (!idToken) return;
-  const response = await axios.get('http://localhost:3000/getOrders', {
+  const response = await axios.get(`${apiURL}/getOrders`, {
     params: { idToken: idToken },
   });
 
@@ -88,9 +89,7 @@ async function getOrders(idToken: string | undefined | null) {
 
 async function getOrderDetails(orderId: string | undefined) {
   if (!orderId) return;
-  const response = await axios.get(
-    `http://localhost:3000/getOrderDetails/${orderId}`,
-  );
+  const response = await axios.get(`${apiURL}/getOrderDetails/${orderId}`);
 
   return response.data;
 }

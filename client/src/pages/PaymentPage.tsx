@@ -2,6 +2,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { Stripe, loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 
+import apiURL from '../API/apiURL';
 import LoadingPageComponent from '../components/LoadingComponents/LoadingPageComponent';
 import CheckoutForm from '../features/PaymentPage/components/CheckoutForm';
 
@@ -11,14 +12,14 @@ function PaymentPage() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/config').then(async (r) => {
+    fetch(`${apiURL}/config`).then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:3000/create-payment-intent', {
+    fetch(`${apiURL}/create-payment-intent`, {
       method: 'POST',
       body: JSON.stringify({}),
     }).then(async (result) => {

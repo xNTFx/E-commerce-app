@@ -29,8 +29,9 @@ async function addProductToLocalStorage(newProduct: CartItemsType) {
         (item) => item.productId === newProduct.productId,
       );
 
-      if (foundIndex !== -1 && existingProducts[foundIndex].count) {
-        existingProducts[foundIndex].count += countToAdd;
+      if (foundIndex !== -1 && existingProducts[foundIndex]) {
+        existingProducts[foundIndex].count =
+          (existingProducts[foundIndex].count ?? 0) + countToAdd;
       } else {
         existingProducts.unshift({
           productId: newProduct.productId,
@@ -87,7 +88,6 @@ const addProductsFromFromLocalStorageToAccountCart = async (
 
   localStorage.removeItem('cartItems');
 };
-
 
 export {
   updateCartLocalStorage,

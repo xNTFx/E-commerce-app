@@ -2,16 +2,17 @@ import axios from 'axios';
 
 import { CartItemsType, UpdateCartType } from '../types/APITypes';
 import getIdTokenFunction from '../utils/getIdTokenFunction';
+import apiURL from './apiURL';
 
 async function updateCartApi(newCart: UpdateCartType) {
-  const URL = 'http://localhost:3000';
+  const URL = `${apiURL}`;
   const data = await axios.post(URL + '/updateCart', newCart);
   return data;
 }
 
 async function addProduct(newProduct: CartItemsType) {
   if (!newProduct.userId || !newProduct.productId || !newProduct.count) return;
-  const URL = 'http://localhost:3000';
+  const URL = `${apiURL}`;
   const data = await axios.post(URL + '/addItemToCart', newProduct);
 
   return data;
@@ -19,7 +20,7 @@ async function addProduct(newProduct: CartItemsType) {
 
 async function addProductsToCart(products: string[]) {
   if (!products || products.length === 0) return;
-  const URL = 'http://localhost:3000/addOrUpdateItemsInCart';
+  const URL = `${apiURL}/addOrUpdateItemsInCart`;
   const idToken = await getIdTokenFunction();
   const data = await axios.post(URL, {
     userId: idToken,
@@ -29,7 +30,7 @@ async function addProductsToCart(products: string[]) {
 }
 
 async function createOrder(state: CartItemsType, idToken: string | undefined) {
-  const data = await axios.post('http://localhost:3000/createOrder', {
+  const data = await axios.post(`${apiURL}/createOrder`, {
     idToken: idToken,
     state: state,
   });

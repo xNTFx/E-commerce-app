@@ -1,5 +1,4 @@
 import { Rating } from '@mui/material';
-//import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ProductType } from '../../../types/APITypes';
@@ -11,17 +10,6 @@ interface ProductListProps {
 }
 
 export default function ProductList({ data }: ProductListProps) {
-  // useEffect(() => {
-  //   // Adding tags <link rel="preload"> to <head>
-  //   data?.productList?.forEach((product) => {
-  //     const link = document.createElement('link');
-  //     link.rel = 'preload';
-  //     link.as = 'image';
-  //     link.href = product.thumbnail;
-  //     document.head.appendChild(link);
-  //   });
-  // }, [data]);
-
   const productList = data?.productList?.map((product: ProductType) => {
     const discountedPrice = Math.round(
       product.price + (product.price * product.discountPercentage) / 100,

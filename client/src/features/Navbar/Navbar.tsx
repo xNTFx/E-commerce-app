@@ -1,14 +1,9 @@
-import { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-import LoadingDivComponent from '../../components/LoadingComponents/LoadingDivComponent';
-import { UserContext } from '../../context/UserContext';
 import NavbarAccount from './components/NavbarAccount';
 import NavbarCart from './components/NavbarCart';
 
 export default function Navbar() {
-  const { user } = useContext(UserContext);
-
   return (
     <>
       <header>
@@ -17,7 +12,6 @@ export default function Navbar() {
             Logo
           </Link>
           <div className="z-50 flex flex-row items-center justify-center gap-3">
-            {!user?.email ? <LoadingDivComponent /> : null}
             <NavbarCart />
             <NavbarAccount />
           </div>
