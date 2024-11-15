@@ -12,7 +12,23 @@ import OrdersRoutes from "./Routes/OrdersRoutes.js";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  'https://e-commerce-app.pawelsobon.pl',
+  'https://www.e-commerce-app.pawelsobon.pl',
+];
+
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (origin && allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('not allowed by cors'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
 
 mongoose
   .connect(process.env.MONGODB_URI || "", { dbName: "e-commerce" })
