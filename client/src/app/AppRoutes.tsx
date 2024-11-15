@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import LoadingDivComponent from '../components/LoadingComponents/LoadingDivComponent';
 import Navbar from '../features/Navbar/Navbar';
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 
 const CartPage = lazy(() => import('../pages/CartPage'));
 const HomePage = lazy(() => import('../pages/HomePage'));
@@ -26,6 +27,7 @@ function AppRoutes() {
     >
       <Routes>
         <Route path="/" element={<Navigate to="page/1" replace />} />
+        <Route path='*' element={<NotFoundPage />} />
         <Route path="/page" element={<Navigate to="page/1" replace />} />
         <Route path="/" element={<Navbar />}>
           <Route path="cart" element={<CartPage />} />
