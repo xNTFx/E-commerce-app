@@ -127,7 +127,7 @@ export default function ProductPage() {
                       <s className="text-xl">${discountedPrice.toFixed(2)}</s>
                     </p>
                     <p className="rounded-lg bg-green-200 px-1 text-xl font-bold text-green-800">
-                      -{Math.round(product.discountPercentage)}%
+                      -{Math.ceil(product.discountPercentage)}%
                     </p>
                   </>
                 ) : null}
