@@ -49,7 +49,7 @@ export default function ProductPage() {
   }
   if (!data || data.length === 0) return;
 
-  const discountedPrice = Math.round(
+  const discountedPrice = Math.ceil(
     product?.price + (product?.price * product?.discountPercentage) / 100,
   );
 
