@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import CartItems from '../components/CartItems';
 import LoadingPageComponent from '../components/LoadingComponents/LoadingPageComponent';
-import useDeleteEntireCart from '../features/OrderSummaryPage/hooks/useDeleteEntireCart';
 import useGetCartItems from '../hooks/useGetCartItems';
 
 export default function OrderSummaryPage() {
@@ -12,13 +11,7 @@ export default function OrderSummaryPage() {
 
   const { data, isLoading } = useGetCartItems();
 
-  const { removeCartLocalstorage } = useDeleteEntireCart();
-
   const navigate = useNavigate();
-
-  async function deleteCartFunction() {
-    removeCartLocalstorage();
-  }
 
   if (isLoading || data === undefined) {
     return <LoadingPageComponent />;
@@ -62,7 +55,6 @@ export default function OrderSummaryPage() {
         </section>
         <button
           onClick={() => {
-            deleteCartFunction();
             navigate('/payment', { state: locate.state });
           }}
           className="flex w-full items-center justify-center rounded-lg bg-green-500 p-1 text-white transition hover:bg-green-400"

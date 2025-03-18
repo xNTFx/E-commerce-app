@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { auth } from '../API/Firebase';
-import useAddProductsFromFromLocalStorageToAccountCart from '../hooks/useAddProductsFromFromLocalStorageToAccountCart';
 import useShowNotification from '../hooks/useShowNotification';
 import { FirebaseError, FirebaseErrorCodes } from '../types/FirebaseAuthTypes';
 
@@ -26,9 +25,6 @@ function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { showNotification } = useShowNotification();
-
-  const addLocalStorageToAccCart =
-    useAddProductsFromFromLocalStorageToAccountCart();
 
   const {
     register,
@@ -77,7 +73,6 @@ function Login() {
       );
       reset();
       if (userCredential.user) {
-        await addLocalStorageToAccCart();
         showNotification('Successfully logged in', {
           backgroundColor: 'green',
           textColor: '#ffffff',
@@ -102,7 +97,7 @@ function Login() {
   }
 
   return (
-    <main className="flex h-[60vh] flex-col items-center justify-center">
+    <main className="flex pt-14 flex-col items-center justify-center">
       <form
         onSubmit={handleSubmit(handleLoginSubmit)}
         noValidate

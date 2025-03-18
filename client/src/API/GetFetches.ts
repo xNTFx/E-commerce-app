@@ -54,7 +54,7 @@ async function fetchProductsFromCart(
 async function getProductsFromArray(ids: string[]) {
   if (ids.length === 0) return null;
 
-  const URL = `${apiURL}/productsFromIdArray?ids=${ids}`;
+  const URL = `${apiURL}/products/productsFromIdArray?ids=${ids}`;
   const response = await fetch(URL);
   const data = await response.json();
 
@@ -66,7 +66,7 @@ async function getSingleProduct(
 ) {
   const [, id] = context.queryKey;
   if (!id) return;
-  const URL = `${apiURL}/singleProduct?id=${id}`;
+  const URL = `${apiURL}/products/singleProduct?id=${id}`;
   const response = await fetch(URL);
   const data = await response.json();
   return data;
@@ -80,7 +80,7 @@ async function getCategories() {
 
 async function getOrders(idToken: string | undefined | null) {
   if (!idToken) return;
-  const response = await axios.get(`${apiURL}/getOrders`, {
+  const response = await axios.get(`${apiURL}/orders/getOrders`, {
     params: { idToken: idToken },
   });
 
@@ -89,7 +89,7 @@ async function getOrders(idToken: string | undefined | null) {
 
 async function getOrderDetails(orderId: string | undefined) {
   if (!orderId) return;
-  const response = await axios.get(`${apiURL}/getOrderDetails/${orderId}`);
+  const response = await axios.get(`${apiURL}/orders/getOrderDetails/${orderId}`);
 
   return response.data;
 }

@@ -12,14 +12,14 @@ function PaymentPage() {
   const [clientSecret, setClientSecret] = useState('');
 
   useEffect(() => {
-    fetch(`${apiURL}/config`).then(async (r) => {
+    fetch(`${apiURL}/stripe/config`).then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
   }, []);
 
   useEffect(() => {
-    fetch(`${apiURL}/create-payment-intent`, {
+    fetch(`${apiURL}/stripe/create-payment-intent`, {
       method: 'POST',
       body: JSON.stringify({}),
     }).then(async (result) => {

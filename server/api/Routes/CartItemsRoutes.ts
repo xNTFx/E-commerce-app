@@ -5,7 +5,7 @@ import { CartItemsModel } from "api/DTO/DTO";
 
 const router = express.Router();
 
-router.get("/cart", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { userId } = req.query;
 

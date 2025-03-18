@@ -43,10 +43,10 @@ mongoose
   .then(() => console.info("MongoDB connection established"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.use(ProductsRoutes);
-app.use(CartItemsRoutes);
-app.use(CategoriesRoutes);
-app.use(OrdersRoutes);
+app.use("/products", ProductsRoutes);
+app.use("/cart", CartItemsRoutes);
+app.use("/categories", CategoriesRoutes);
+app.use("/orders", OrdersRoutes);
 setupPaymentRoutes(app);
 
 app.get("/", (req, res) => {

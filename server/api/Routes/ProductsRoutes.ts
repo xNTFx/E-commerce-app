@@ -14,7 +14,7 @@ interface QueryParams {
   categoryList?: string;
 }
 
-router.get("/products", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
     const { limit, offset, minPrice, maxPrice, sortBy, categoryList } =
       req.query as QueryParams;

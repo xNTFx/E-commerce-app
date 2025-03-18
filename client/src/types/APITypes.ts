@@ -23,6 +23,20 @@ interface CartItemsType {
   productDetails?: ProductType[];
 }
 
+type Person = {
+  name: string;
+  surname: string;
+  address: string;
+  zipCode: string;
+  cityTown: string;
+  phone: string;
+  email: string;
+};
+
+interface CreateOrderType {
+  state: Person & { products: ProductType[] };
+}
+
 interface UpdateCartType {
   userId?: string;
   cartId?: string;
@@ -60,9 +74,11 @@ interface OrderProps {
 
 export type {
   ProductType,
+  CreateOrderType,
   CartItemsType,
   UpdateCartType,
   DeleteCartItemType,
   CategoriesProps,
   OrderProps,
+  Person,
 };

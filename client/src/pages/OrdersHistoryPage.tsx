@@ -70,21 +70,25 @@ export default function OrdersHistoryPage() {
     <main className="flex flex-col items-center justify-center pt-4">
       <section className="w-full max-w-5xl p-4">
         <h1 className="mb-4 text-3xl font-bold">Orders</h1>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse bg-white">
-            <thead>
-              <tr className="bg-gray-200 text-left">
-                <th className="px-4 py-2 font-medium">ID</th>
-                <th className="px-4 py-2 font-medium">DATE</th>
-                <th className="px-4 py-2 font-medium">TOTAL</th>
-                <th className="px-4 py-2 font-medium">QUANTITY</th>
-                <th className="px-4 py-2 font-medium">STATUS</th>
-                <th className="px-4 py-2 font-medium">INFO</th>
-              </tr>
-            </thead>
-            <tbody>{orderItems}</tbody>
-          </table>
-        </div>
+        {orderItems.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse bg-white">
+              <thead>
+                <tr className="bg-gray-200 text-left">
+                  <th className="px-4 py-2 font-medium">ID</th>
+                  <th className="px-4 py-2 font-medium">DATE</th>
+                  <th className="px-4 py-2 font-medium">TOTAL</th>
+                  <th className="px-4 py-2 font-medium">QUANTITY</th>
+                  <th className="px-4 py-2 font-medium">STATUS</th>
+                  <th className="px-4 py-2 font-medium">INFO</th>
+                </tr>
+              </thead>
+              <tbody>{orderItems}</tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-xl font-medium">No order history</p>
+        )}
       </section>
     </main>
   );

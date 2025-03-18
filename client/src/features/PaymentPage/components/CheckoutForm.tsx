@@ -7,7 +7,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { createOrder } from '../../../API/PostFetches';
 import { UserContext } from '../../../context/UserContext';
 import useShowNotification from '../../../hooks/useShowNotification';
+import { CreateOrderType, Person, ProductType } from '../../../types/APITypes';
 import getIdTokenFunction from '../../../utils/getIdTokenFunction';
+import useDeleteEntireCart from '../../OrderSummaryPage/hooks/useDeleteEntireCart';
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -18,12 +20,29 @@ export default function CheckoutForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const { removeCartLocalstorage } = useDeleteEntireCart();
+
   const [message, setMessage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  function createOrderFunction(state: Person, idToken: string | undefined) {
+    const products = idToken 
+      ? [] 
+      : JSON.parse(localStorage.getItem('cartItems') || '[]') as ProductType[];
+  
+    const orderPayload: CreateOrderType = {
+      state: {
+        ...state,
+        products: products
+      }
+    };
+  
+    return createOrder(orderPayload, idToken);
+  }
+
   const mutation = useMutation({
     mutationFn: (idToken: string | undefined) =>
-      createOrder(locate.state, idToken),
+      createOrderFunction(locate.state, idToken),
     onSuccess: () => {
       queryClient.invalidateQueries('orders');
       showNotification('An order has been successfully created', {
@@ -31,6 +50,7 @@ export default function CheckoutForm() {
         textColor: '#ffffff',
         duration: 3000,
       });
+      removeCartLocalstorage();
       navigate('/');
     },
     onError: () => {

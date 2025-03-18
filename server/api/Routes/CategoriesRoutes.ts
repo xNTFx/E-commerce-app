@@ -3,7 +3,7 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/categories", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await CategoriesDao.getAllCategories();
     res.send(result);

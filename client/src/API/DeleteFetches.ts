@@ -6,7 +6,7 @@ import apiURL from './apiURL';
 async function deleteEntireCart(userId: string | undefined) {
   if (!userId) return;
   const URL = `${apiURL}`;
-  const data = await axios.delete(URL + '/deleteEntireCart', {
+  const data = await axios.delete(URL + '/cart/deleteEntireCart', {
     data: { userId },
   });
   return data;
@@ -15,7 +15,7 @@ async function deleteEntireCart(userId: string | undefined) {
 async function deleteCartItem({ userId, cartId }: DeleteCartItemType) {
   if (!userId || !cartId) return;
   const URL = `${apiURL}`;
-  const response = await axios.delete(URL + '/deleteCartItem', {
+  const response = await axios.delete(URL + '/cart/deleteCartItem', {
     data: { userId, cartId },
   });
   return response;

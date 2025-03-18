@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { auth } from '../API/Firebase';
-import useAddProductsFromFromLocalStorageToAccountCart from '../hooks/useAddProductsFromFromLocalStorageToAccountCart';
 import useShowNotification from '../hooks/useShowNotification';
 import { FirebaseErrorCodes } from '../types/FirebaseAuthTypes';
 
@@ -38,9 +37,6 @@ function Register() {
   const navigate = useNavigate();
   const { showNotification } = useShowNotification();
 
-  const addLocalStorageToAccCart =
-    useAddProductsFromFromLocalStorageToAccountCart();
-
   const {
     register,
     handleSubmit,
@@ -69,7 +65,6 @@ function Register() {
       reset();
       if (userCredential.user) {
         localStorage.setItem('cartItems', '');
-        await addLocalStorageToAccCart();
         showNotification('Successfully registered', {
           backgroundColor: 'green',
           textColor: '#ffffff',
@@ -98,7 +93,7 @@ function Register() {
   }
 
   return (
-    <div className="flex h-[60vh] flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center pt-14">
       <form
         onSubmit={handleSubmit(handleRegistrationSubmit)}
         noValidate
